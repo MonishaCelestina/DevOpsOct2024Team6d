@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>The Library Board - Student</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>The Library Board - Student</h1>
+        <h1>The Library Board - Student Portal</h1>
 
-        <h2>Welcome, [Student Name]!</h2>
-        <p>Your Points: [Student Points]</p>
+        <h2>Welcome, <span id="studentName">[Student Name]</span>!</h2>
+        <p>Your Points: <span id="studentPoints">0</span></p>
 
-        <button id="redeemableItemsBtn">Redeemable Items</button>
-        <button id="redeemedItemsBtn">Redeemed Items</button>
+        <h3>Redeemable Items</h3>
+        <div id="itemsContainer"></div>
 
+        <button id="logoutBtn">Logout</button>
     </div>
 
-    <script src="script.js"></script>
+    <script src="./Frontend/src/components/student.js"></script>
 </body>
 </html>
