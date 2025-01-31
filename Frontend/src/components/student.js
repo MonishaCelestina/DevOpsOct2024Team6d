@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("studentPoints").textContent = student.points;
 
     console.log("Fetching redeemable items on page load...");
-    await fetchRedeemableItems(); // Ensure this runs
+    await fetchRedeemableItems(); 
 });
 
 async function fetchRedeemableItems() {
@@ -21,8 +21,7 @@ async function fetchRedeemableItems() {
             return;
         }
 
-        // Ensure the URL matches your backend route
-        const response = await fetch(`http://localhost:3000/api/students/${student.studentID}/redeemable-items`);
+        const response = await fetch(`http://localhost:3000/api/student/${student.studentID}/redeemable-items`);
         
         if (!response.ok) {
             console.error(`Failed to fetch redeemable items. Status: ${response.status}`);
@@ -33,7 +32,7 @@ async function fetchRedeemableItems() {
         console.log("Fetched redeemable items:", items);
 
         const itemsContainer = document.getElementById("itemsContainer");
-        itemsContainer.innerHTML = ""; // Clear previous content
+        itemsContainer.innerHTML = ""; 
 
         if (items.length > 0) {
             items.forEach(item => {
@@ -52,7 +51,6 @@ async function fetchRedeemableItems() {
     }
 }
 
-
 async function redeemItem(itemID, pointsRequired) {
     const student = JSON.parse(localStorage.getItem("student"));
 
@@ -64,12 +62,12 @@ async function redeemItem(itemID, pointsRequired) {
     try {
         console.log(`Attempting to redeem itemID: ${itemID} for studentID: ${student.studentID}`);
 
-        const response = await fetch(`http://localhost:3000/api/students/${student.studentID}/redeem`, {
+        const response = await fetch(`http://localhost:3000/api/student/${student.studentID}/redeem`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ itemID }), // Send the itemID in the body
+            body: JSON.stringify({ itemID }), 
         });
 
         if (!response.ok) {
@@ -82,20 +80,16 @@ async function redeemItem(itemID, pointsRequired) {
         const data = await response.json();
         alert("Item redeemed successfully!");
 
-        // Update points locally
         student.points -= pointsRequired;
         localStorage.setItem("student", JSON.stringify(student));
         document.getElementById("studentPoints").textContent = student.points;
 
-        // Refresh redeemable items list
         fetchRedeemableItems();
     } catch (error) {
         console.error("Error redeeming item:", error);
     }
 }
 
-
-// Logout Function
 document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("student");
     window.location.href = "loginpage.html";

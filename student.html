@@ -9,12 +9,15 @@
         <h1>The Library Board - Student Portal</h1>
 
         <h2>Welcome, <span id="studentName">[Student Name]</span>!</h2>
-        <p>Your Points: <span id="studentPoints">0</span></p>
+        <p class="points">Your Points: <span id="studentPoints">0</span></p>
 
         <h3>Redeemable Items</h3>
         <div id="itemsContainer"></div>
 
-        <button id="logoutBtn">Logout</button>
+        <div class="button-group">
+            <button id="redeemedItemsBtn" onclick="window.location.href='redeemed.html'">View Redeemed Items</button>
+            <button id="logoutBtn">Logout</button>
+        </div>
     </div>
 
     <script src="./Frontend/src/components/student.js"></script>

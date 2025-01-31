@@ -1,21 +1,50 @@
 const StudentModel = require("../models/studentModel");
 const db = require('../db')
 const StudentController = {
-    // Fetch student details
-    getStudentDetails: (req, res) => {
-        const studentID = req.params.studentID;
 
-        StudentModel.getStudentDetails(studentID, (err, results) => {
+    loginStudent: (req, res) => {
+        const { email, password } = req.body;
+        
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
+
+        StudentModel.authenticateStudent(email, password, (err, student) => {
+            if (err) return res.status(500).json({ message: "Internal Server Error" });
+
+            if (!student) {
+                return res.status(401).json({ message: "Invalid email or password" });
+            }
+
+            res.json({ message: "Student login successful", student });
+        });
+    },
+    // Fetch all students
+    getAllStudents: (req, res) => {
+        StudentModel.getAllStudents((err, students) => {
+            if (err) {
+                console.error("Error fetching students:", err);
+                return res.status(500).json({ message: "Internal Server Error" });
+            }
+            res.json(students); // ✅ Return full student data
+        });
+    },
+
+    // Fetch a single student by ID
+    getStudentDetails: (req, res) => {
+        const { studentID } = req.params;
+
+        StudentModel.getStudentByID(studentID, (err, student) => {
             if (err) {
                 console.error("Error fetching student:", err);
                 return res.status(500).json({ message: "Internal Server Error" });
             }
 
-            if (results.length === 0) {
+            if (!student) {
                 return res.status(404).json({ message: "Student not found" });
             }
 
-            res.json(results[0]);
+            res.json(student); // ✅ Return full student data for the given ID
         });
     },
 
@@ -36,6 +65,22 @@ const StudentController = {
         });
     },
     
+    getRedeemedItems: (req, res) => {
+        const { studentID } = req.params;
+
+        StudentModel.getRedeemedItems(studentID, (err, items) => {
+            if (err) {
+                console.error("Error fetching redeemed items:", err);
+                return res.status(500).json({ message: "Internal Server Error" });
+            }
+
+            if (!items || items.length === 0) {
+                return res.status(404).json([]); // Return empty array
+            }
+
+            res.json(items);
+        });
+    },
 
     redeemItem: (req, res) => {
         const { studentID } = req.params;
